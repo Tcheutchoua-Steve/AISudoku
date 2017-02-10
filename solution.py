@@ -2,7 +2,6 @@ assignments = []
 rows = 'ABCDEFGHI'
 cols = '123456789'
 
-
 def cross(A, B):
     "Cross product of elements in A and elements in B."
     return [s + t for s in A for t in B]
@@ -71,11 +70,18 @@ def naked_twins(values):
 
     # Find all instances of naked twins
     # Eliminate the naked twins as possibilities for their peers
+
+    unitlists = row_units + column_units + square_units
+
+    units_dia = dict((s, [u for u in unitlists if s in u]) for s in boxes)
+    peers_dia = dict((s, set(sum(units[s], [])) - set([s])) for s in boxes)
+
     double_values = [box for box in values.keys() if len(values[box]) == 2]
 
+    print (double_values)
     for box in double_values:
-        for unit in units[box]:
-            for peer in set(unit).intersection(set(peers[box])):
+        for unit in units_dia[box]:
+            for peer in set(unit).intersection(set(peers_dia[box])):
                 if not set(values[peer]).difference(set(values[box])):
                     first_digit = values[box][0]
                     second_digit = values[box][1]
@@ -83,11 +89,12 @@ def naked_twins(values):
 
                     for item in set(unit).difference(set([box, peer])):
                         if first_digit in values[item]:
-                            values[item].remove(first_digit)
+                            values[item] = values[item].replace(first_digit,"")
                         if second_digit in values[item]:
-                            values[item].remove(second_digit)
-    pass
+                            values[item] = values[item].replace(second_digit,"")
 
+    print(values)
+    return values
 def grid_values(grid):
     """
     Convert grid into a dict of {square: char} with '123456789' for empties.
@@ -198,8 +205,11 @@ def solve(grid):
     """
     dictionary = grid_values(grid)
     dictionary = reduce_puzzle(dictionary)
-    return search(dictionary)
-
+    results = search(dictionary)
+    if results == False :
+        return False
+    else :
+        return results
 
 if __name__ == '__main__':
     diag_sudoku_grid = '2.............62....1....7...6..8...3...9...7...6..4...4....8....52.............3'
