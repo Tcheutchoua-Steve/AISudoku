@@ -16,6 +16,7 @@ def left_diagonal_unit(A, B):
     """
     left_diag = []
     i = 0
+    #Join the letters in top left to botton right manner
     for r in A:
         left_diag.append(r + B[i])
         i = i + 1
@@ -27,6 +28,7 @@ def right_diagonal_unit(A, B):
     right_diag = []
     size = len(A)
 
+    #Cross elements from top right to botton left manner
     for r in A:
         right_diag.append(r + B[size - 1])
         size = size - 1
@@ -37,10 +39,8 @@ boxes = cross(rows, cols)
 
 left_diagonal = [left_diagonal_unit(rows, cols)]
 right_diagonal = [right_diagonal_unit(rows, cols)]
-
 row_units = [cross(r, cols) for r in rows]
 column_units = [cross(rows, c) for c in cols]
-
 square_units = [cross(rs, cs) for rs in ('ABC', 'DEF', 'GHI') for cs in ('123', '456', '789')]
 unitlist = row_units + column_units + square_units + left_diagonal + right_diagonal
 
@@ -68,14 +68,14 @@ def naked_twins(values):
         the values dictionary with the naked twins eliminated from peers.
     """
 
-    # Find all instances of naked twins
-    # Eliminate the naked twins as possibilities for their peers
 
+    #Create new bariables without including diagonals
     unitlists = row_units + column_units + square_units
 
     units_dia = dict((s, [u for u in unitlists if s in u]) for s in boxes)
     peers_dia = dict((s, set(sum(units[s], [])) - set([s])) for s in boxes)
-
+    # Find all instances of naked twins
+    # Eliminate the naked twins as possibilities for their peers
     double_values = [box for box in values.keys() if len(values[box]) == 2]
 
     print (double_values)
@@ -141,6 +141,7 @@ def eliminate(values):
         digit = values[box]
         for peer in peers[box]:
             values[peer] = values[peer].replace(digit, '')
+            #assign_value(values,box,values[peer])
     return values
 
 def only_choice(values):
@@ -154,6 +155,7 @@ def only_choice(values):
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
                 values[dplaces[0]] = digit
+               # assign_value(values,dplaces,values[dplaces[0]])
     return values
 
 def reduce_puzzle(values):
