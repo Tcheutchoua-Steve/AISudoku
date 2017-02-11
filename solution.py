@@ -141,9 +141,6 @@ def eliminate(values):
         digit = values[box]
         for peer in peers[box]:
             values[peer] = values[peer].replace(digit, '')
-            print(values)
-            print ( "\n box \n" + box + " \n Value \n" + values[peer])
-            #assign_value(values,box,values[peer])
     return values
 
 def only_choice(values):
