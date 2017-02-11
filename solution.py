@@ -78,14 +78,15 @@ def naked_twins(values):
     # Eliminate the naked twins as possibilities for their peers
     double_values = [box for box in values.keys() if len(values[box]) == 2]
 
-    print (double_values)
+
     for box in double_values:
         for unit in units_dia[box]:
             for peer in set(unit).intersection(set(peers_dia[box])):
                 if not set(values[peer]).difference(set(values[box])):
-                    first_digit = values[box][0]
-                    second_digit = values[box][1]
-                    # print(box + " " + first_digit  +',' + second_digit)
+                    if (len(values[box]) == 2) :
+                        first_digit = values[box][0]
+                        second_digit = values[box][1]
+                        # print(box + " " + first_digit  +',' + second_digit)
 
                     for item in set(unit).difference(set([box, peer])):
                         if first_digit in values[item]:
@@ -93,7 +94,6 @@ def naked_twins(values):
                         if second_digit in values[item]:
                             values[item] = values[item].replace(second_digit,"")
 
-    print(values)
     return values
 def grid_values(grid):
     """
@@ -141,6 +141,8 @@ def eliminate(values):
         digit = values[box]
         for peer in peers[box]:
             values[peer] = values[peer].replace(digit, '')
+            print(values)
+            print ( "\n box \n" + box + " \n Value \n" + values[peer])
             #assign_value(values,box,values[peer])
     return values
 
@@ -155,7 +157,7 @@ def only_choice(values):
             dplaces = [box for box in unit if digit in values[box]]
             if len(dplaces) == 1:
                 values[dplaces[0]] = digit
-               # assign_value(values,dplaces,values[dplaces[0]])
+                assign_value(values,dplaces[0],values[dplaces[0]])
     return values
 
 def reduce_puzzle(values):
